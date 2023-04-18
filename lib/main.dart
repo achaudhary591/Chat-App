@@ -1,3 +1,4 @@
+import 'package:chat_app/screens/screens.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -24,6 +25,7 @@ class MyHomePage extends StatelessWidget {
         ).copyWith(secondary: Colors.indigoAccent),
         useMaterial3: true,
       ),
+      // home: ChatScreen(),
     );
   }
 }
