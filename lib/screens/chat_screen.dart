@@ -12,12 +12,6 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    Firebase.initializeApp();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,22 +28,30 @@ class _ChatScreenState extends State<ChatScreen> {
             .collection('chats/v2soK3e5qTlEEIvgLhP2/messages')
             .snapshots(),
         builder: (ctx, streamSnapshot) {
-          if(streamSnapshot.connectionState == ConnectionState.waiting){
+          if (streamSnapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: loadingWidget(50),
             );
           }
+          final documents = streamSnapshot.data?.docs;
           return ListView.builder(
             itemCount: streamSnapshot.data?.docs.length,
             itemBuilder: (ctx, index) => Container(
               padding: const EdgeInsets.all(8),
-              child: const Text('This works!'),
+              child: Text(documents?[index]['text']),
             ),
           );
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          FirebaseFirestore.instance
+              .collection('chats/v2soK3e5qTlEEIvgLhP2/messages')
+              .add({
+            'text': 'This is 2 added by clicking the button in app!',
+          });
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }
