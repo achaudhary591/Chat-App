@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:chat_app/widgets/widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,8 +27,9 @@ class _AuthScreenState extends State<AuthScreen> {
     UserCredential authResult;
     try {
       setState(() {
-        _isLoading= true;
+        _isLoading = true;
       });
+
       if (isLogin) {
         authResult = await _auth.signInWithEmailAndPassword(
             email: email, password: password);
@@ -35,28 +38,33 @@ class _AuthScreenState extends State<AuthScreen> {
           email: email,
           password: password,
         );
-        await FirebaseFirestore.instance.collection('users').doc(authResult.user!.uid).set({
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(authResult.user!.uid)
+            .set({
           'username': userName,
           'email': email,
         });
       }
-    } on PlatformException catch (e) {
+    } on FirebaseException catch (e) {
       // TODO
       var message = 'An error occurred, please check your credentials!';
       if (e.message != null) {
         message = e.message!;
       }
-      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
-        content: Text(message),
-        backgroundColor: Theme.of(context).colorScheme.error,
-      ));
+      ScaffoldMessenger.of(ctx).showSnackBar(
+        SnackBar(
+          content: Text(message, style: const TextStyle(color: Colors.black),),
+          backgroundColor: Theme.of(ctx).colorScheme.error,
+        ),
+      );
       setState(() {
-        _isLoading= false;
+        _isLoading = false;
       });
     } catch (e) {
       print(e);
       setState(() {
-        _isLoading= false;
+        _isLoading = false;
       });
     }
   }

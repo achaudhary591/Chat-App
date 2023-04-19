@@ -127,7 +127,7 @@ class _AuthFormState extends State<AuthForm> {
                   const SizedBox(
                     height: 12,
                   ),
-                  if (widget.isLoading) loadingWidget(25),
+                  if (widget.isLoading) loadingWidget(35),
                   if (!widget.isLoading)
                     ElevatedButton(
                       key: const ValueKey('submitButton'),
