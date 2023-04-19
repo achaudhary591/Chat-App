@@ -50,7 +50,7 @@ class _AuthFormState extends State<AuthForm> {
                     TextFormField(
                       obscureText: true,
                       decoration: const InputDecoration(
-                        labelText: 'Password',
+                        labelText: 'Password.',
                         labelStyle: TextStyle(color: Colors.grey),
                       ),
                     ),
