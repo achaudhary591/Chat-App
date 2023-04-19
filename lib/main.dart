@@ -20,6 +20,10 @@ class MyHomePage extends StatelessWidget {
       title: 'Chat App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        buttonTheme: ButtonTheme.of(context).copyWith(
+          textTheme: ButtonTextTheme.primary,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
+        ),
         colorScheme: ColorScheme.fromSwatch(
           primarySwatch: Colors.indigo,
           backgroundColor: Colors.white,
@@ -28,7 +32,7 @@ class MyHomePage extends StatelessWidget {
         ).copyWith(secondary: Colors.indigoAccent),
         useMaterial3: true,
       ),
-      home: AuthScreen(),
+      home: const AuthScreen(),
     );
   }
 }
