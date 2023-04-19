@@ -25,7 +25,7 @@ class MyHomePage extends StatelessWidget {
         ).copyWith(secondary: Colors.indigoAccent),
         useMaterial3: true,
       ),
-      // home: ChatScreen(),
+      home: ChatScreen(),
     );
   }
 }
