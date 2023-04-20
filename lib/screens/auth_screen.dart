@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);
@@ -54,7 +55,10 @@ class _AuthScreenState extends State<AuthScreen> {
       }
       ScaffoldMessenger.of(ctx).showSnackBar(
         SnackBar(
-          content: Text(message, style: const TextStyle(color: Colors.black),),
+          content: Text(
+            message,
+            style: const TextStyle(color: Colors.black),
+          ),
           backgroundColor: Theme.of(ctx).colorScheme.error,
         ),
       );

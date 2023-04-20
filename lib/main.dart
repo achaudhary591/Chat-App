@@ -1,6 +1,8 @@
 import 'package:chat_app/screens/screens.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,9 +23,9 @@ class MyHomePage extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         buttonTheme: ButtonTheme.of(context).copyWith(
-          textTheme: ButtonTextTheme.primary,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
-        ),
+            textTheme: ButtonTextTheme.primary,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20))),
         colorScheme: ColorScheme.fromSwatch(
           primarySwatch: Colors.indigo,
           backgroundColor: Colors.white,
@@ -32,7 +34,15 @@ class MyHomePage extends StatelessWidget {
         ).copyWith(secondary: Colors.indigoAccent),
         useMaterial3: true,
       ),
-      home: const AuthScreen(),
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (ctx, userSnapshot) {
+          if (userSnapshot.hasData) {
+            return const ChatScreen();
+          }
+          return const AuthScreen();
+        },
+      ),
     );
   }
 }
