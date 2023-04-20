@@ -33,54 +33,38 @@ class _ChatScreenState extends State<ChatScreen> {
             items: [
               DropdownMenuItem(
                 value: 'logout',
-                child: Container(
-                  child: Row(
-                    children: const [
-                      Icon(Icons.exit_to_app, color: Colors.black,),
-                      SizedBox(width: 5,),
-                      Text('Logout'),
-                    ],
-                  ),
+                child: Row(
+                  children: const [
+                    Icon(
+                      Icons.exit_to_app,
+                      color: Colors.black,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text('Logout'),
+                  ],
                 ),
               ),
             ],
             onChanged: (itemIdentifier) {
-              if(itemIdentifier == 'logout') {
+              if (itemIdentifier == 'logout') {
                 FirebaseAuth.instance.signOut();
               }
             },
           ),
+          const SizedBox(
+            width: 10,
+          )
         ],
       ),
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('chats/v2soK3e5qTlEEIvgLhP2/messages')
-            .snapshots(),
-        builder: (ctx, streamSnapshot) {
-          if (streamSnapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: loadingWidget(50),
-            );
-          }
-          final documents = streamSnapshot.data?.docs;
-          return ListView.builder(
-            itemCount: streamSnapshot.data?.docs.length,
-            itemBuilder: (ctx, index) => Container(
-              padding: const EdgeInsets.all(8),
-              child: Text(documents?[index]['text']),
-            ),
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          FirebaseFirestore.instance
-              .collection('chats/v2soK3e5qTlEEIvgLhP2/messages')
-              .add({
-            'text': 'This is 2 added by clicking the button in app!',
-          });
-        },
-        child: const Icon(Icons.add),
+      body: Column(
+        children: const [
+          Expanded(
+            child: Messages(),
+          ),
+          NewMessage(),
+        ],
       ),
     );
   }
