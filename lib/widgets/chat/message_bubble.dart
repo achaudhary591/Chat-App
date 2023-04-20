@@ -10,13 +10,18 @@ class MessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Random random = Random();
     return Row(
+      mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         Container(
           decoration: BoxDecoration(
-            color: getRandomColor(),
-            borderRadius: BorderRadius.circular(21),
+            color: isMe ? Colors.black : getRandomColor(),
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(12),
+              topRight: const Radius.circular(12),
+              bottomRight: isMe ? const Radius.circular(0) : const Radius.circular(12),
+              bottomLeft: !isMe ? const Radius.circular(0) : const Radius.circular(12),
+            ),
           ),
           width: 140,
           padding: const EdgeInsets.symmetric(
@@ -38,9 +43,7 @@ class MessageBubble extends StatelessWidget {
   final List<Color> predefinedColors = [
     Colors.indigo,
     Colors.purple,
-    Colors.black54,
     Colors.blueAccent,
-    Colors.grey[900]!,
     Colors.deepOrange,
     Colors.blueGrey,
     Colors.pink,

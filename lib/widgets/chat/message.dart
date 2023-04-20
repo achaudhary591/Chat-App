@@ -8,23 +8,41 @@ class Messages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final user = FirebaseAuth.instance.currentUser;
-    return StreamBuilder(
-      builder: (ctx, chatSnapshot) {
-        if (chatSnapshot.connectionState == ConnectionState.waiting) {
+    return FutureBuilder(
+      future: Future.value(FirebaseAuth.instance.currentUser),
+      builder: (ctx, futureSnapshot) {
+        if (futureSnapshot.connectionState == ConnectionState.waiting) {
           return Center(
             child: loadingWidget(90),
           );
         }
-        final chatDocs = chatSnapshot.data?.docs;
-        return ListView.builder(
-          reverse: true,
-          itemCount: chatDocs?.length,
-          itemBuilder: (ctx, index) => MessageBubble(chatDocs?[index]['text'], chatDocs?[index]['userId'] == user!.uid),
+        return StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection('chat')
+              .orderBy(
+                'createdAt',
+                descending: true,
+              )
+              .snapshots(),
+          builder: (ctx, chatSnapshot) {
+            if (chatSnapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: loadingWidget(90),
+              );
+            }
+            final chatDocs = chatSnapshot.data?.docs;
+            return ListView.builder(
+              reverse: true,
+              itemCount: chatDocs?.length,
+              itemBuilder: (ctx, index) => MessageBubble(
+                chatDocs?[index]['text'],
+                chatDocs?[index]['userId'] == futureSnapshot.data?.uid,
+              ),
+            );
+          },
         );
       },
-      stream: FirebaseFirestore.instance.collection('chat').orderBy('createdAt', descending: true).snapshots(),
     );
   }
 }
