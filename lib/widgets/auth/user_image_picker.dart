@@ -2,18 +2,27 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class CircleAvatarWithPlus extends StatefulWidget {
+class UserImagePicker extends StatefulWidget {
+  UserImagePicker(this.imagePickFn);
+
+  final void Function(File pickedImage) imagePickFn;
+
   @override
-  _CircleAvatarWithPlusState createState() => _CircleAvatarWithPlusState();
+  _UserImagePickerState createState() => _UserImagePickerState();
 }
 
-class _CircleAvatarWithPlusState extends State<CircleAvatarWithPlus> {
+class _UserImagePickerState extends State<UserImagePicker> {
   File? _imageFile;
 
   final picker = ImagePicker();
 
   Future<void> _getImage(ImageSource source) async {
-    final pickedFile = await picker.pickImage(source: source);
+    final pickedFile = await picker.pickImage(
+      source: source,
+      imageQuality: 50,
+      maxHeight: 160,
+      maxWidth: 160,
+    );
     setState(() {
       if (pickedFile != null) {
         _imageFile = File(pickedFile.path);
@@ -21,6 +30,7 @@ class _CircleAvatarWithPlusState extends State<CircleAvatarWithPlus> {
         print('No image selected.');
       }
     });
+    widget.imagePickFn(File(pickedFile!.path));
   }
 
   @override
@@ -48,7 +58,9 @@ class _CircleAvatarWithPlusState extends State<CircleAvatarWithPlus> {
                     leading: const Icon(Icons.photo_library),
                     title: const Text('Gallery'),
                     onTap: () async {
-                      await _getImage(ImageSource.gallery);
+                      await _getImage(
+                        ImageSource.gallery,
+                      );
                       Navigator.of(context).pop();
                     },
                   ),
@@ -85,13 +97,14 @@ class _CircleAvatarWithPlusState extends State<CircleAvatarWithPlus> {
             bottom: 10,
             child: CircleAvatar(
               backgroundColor: Colors.white,
-              backgroundImage: _imageFile != null ? FileImage(_imageFile!) : null,
+              backgroundImage:
+                  _imageFile != null ? FileImage(_imageFile!) : null,
               child: _imageFile == null
                   ? const Icon(
-                Icons.add,
-                size: 90.0,
-                color: Colors.grey,
-              )
+                      Icons.add,
+                      size: 90.0,
+                      color: Colors.grey,
+                    )
                   : null,
             ),
           ),

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:chat_app/widgets/widgets.dart';
@@ -14,6 +15,7 @@ class AuthForm extends StatefulWidget {
     String email,
     String password,
     String? username,
+    File? image,
     bool isLogin,
     BuildContext ctx,
   ) submitFn;
@@ -32,10 +34,24 @@ class _AuthFormState extends State<AuthForm> {
   var _userEmail = '';
   var _userName = '';
   var _userPassword = '';
+  File? _userImageFile;
 
   void _trySubmit() async {
     final isValid = _formKey.currentState?.validate();
     FocusScope.of(context).unfocus();
+
+    if(_userImageFile == null && !_isLogin) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Please pick an image.',
+            style: const TextStyle(color: Colors.black),
+          ),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
+      return;
+    }
 
     if (isValid == true) {
       _formKey.currentState!.save();
@@ -43,10 +59,15 @@ class _AuthFormState extends State<AuthForm> {
         _userEmail.trim(),
         _userPassword.trim(),
         _userName.trim(),
+        _userImageFile,
         _isLogin,
         context,
       );
     }
+  }
+
+  void _pickedImage(File? image){
+    _userImageFile = image;
   }
 
   @override
@@ -66,7 +87,7 @@ class _AuthFormState extends State<AuthForm> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (!_isLogin) CircleAvatarWithPlus(),
+                  if (!_isLogin) UserImagePicker(_pickedImage),
                   TextFormField(
                     key: const ValueKey('em@il'),
                     validator: (String? value) {

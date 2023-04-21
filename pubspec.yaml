@@ -42,11 +42,17 @@ dependencies:
   rounded_loading_button: ^2.1.0
   chat_bubbles: ^1.4.0
   image_picker: ^0.8.7+3
+  flutter_launcher_icons: ^0.13.1
+  firebase_storage: ^11.1.1
+  firebase_messaging: ^14.4.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/logo.png"
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
