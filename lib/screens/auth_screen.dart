@@ -44,7 +44,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
         final ref = await FirebaseStorage.instance.ref().child('user_image').child(authResult.user!.uid + '.jpg');
         
-        await ref.putFile(image!).whenComplete;
+        await ref.putFile(image!);
 
         final url = await ref.getDownloadURL();
 
@@ -63,7 +63,7 @@ class _AuthScreenState extends State<AuthScreen> {
       if (e.message != null) {
         message = e.message!;
       }
-      ScaffoldMessenger.of(context).showSnackBar(
+      ScaffoldMessenger.of(ctx).showSnackBar(
         SnackBar(
           content: Text(
             message,
