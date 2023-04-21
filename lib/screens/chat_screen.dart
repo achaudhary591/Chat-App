@@ -24,34 +24,36 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         backgroundColor: Colors.indigoAccent,
         actions: [
-          DropdownButton(
-            icon: const Icon(
-              Icons.more_vert,
-              color: Colors.white,
-            ),
-            borderRadius: BorderRadius.circular(20),
-            items: [
-              DropdownMenuItem(
-                value: 'logout',
-                child: Row(
-                  children: const [
-                    Icon(
-                      Icons.exit_to_app,
-                      color: Colors.black,
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text('Logout'),
-                  ],
-                ),
+          DropdownButtonHideUnderline(
+            child: DropdownButton(
+              icon: const Icon(
+                Icons.more_vert,
+                color: Colors.white,
               ),
-            ],
-            onChanged: (itemIdentifier) {
-              if (itemIdentifier == 'logout') {
-                FirebaseAuth.instance.signOut();
-              }
-            },
+              borderRadius: BorderRadius.circular(20),
+              items: [
+                DropdownMenuItem(
+                  value: 'logout',
+                  child: Row(
+                    children: const [
+                      Icon(
+                        Icons.exit_to_app,
+                        color: Colors.black,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text('Logout'),
+                    ],
+                  ),
+                ),
+              ],
+              onChanged: (itemIdentifier) {
+                if (itemIdentifier == 'logout') {
+                  FirebaseAuth.instance.signOut();
+                }
+              },
+            ),
           ),
           const SizedBox(
             width: 10,

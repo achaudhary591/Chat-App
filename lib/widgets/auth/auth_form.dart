@@ -66,6 +66,7 @@ class _AuthFormState extends State<AuthForm> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  if (!_isLogin) CircleAvatarWithPlus(),
                   TextFormField(
                     key: const ValueKey('em@il'),
                     validator: (String? value) {
