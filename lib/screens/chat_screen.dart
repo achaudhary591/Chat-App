@@ -12,6 +12,11 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
 
+  Future<String?> getToken() async {
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+    return fcmToken;
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -25,6 +30,7 @@ class _ChatScreenState extends State<ChatScreen> {
       print(message);
       return;
     });
+    print('TOKEN========>${getToken()}');
     super.initState();
   }
 
