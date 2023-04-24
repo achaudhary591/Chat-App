@@ -17,32 +17,40 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+
     // TODO: implement build
-    return MaterialApp(
-      title: 'Chat App',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        buttonTheme: ButtonTheme.of(context).copyWith(
-            textTheme: ButtonTextTheme.primary,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20))),
-        colorScheme: ColorScheme.fromSwatch(
-          primarySwatch: Colors.indigo,
-          backgroundColor: Colors.white,
-          accentColor: Colors.amber,
-          errorColor: Colors.orange,
-        ).copyWith(secondary: Colors.indigoAccent),
-        useMaterial3: true,
-      ),
-      home: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (ctx, userSnapshot) {
-          if (userSnapshot.hasData) {
-            return const ChatScreen();
-          }
-          return const AuthScreen();
-        },
-      ),
+
+    return FutureBuilder(
+      future: _initialization,
+      builder: (context, appSnapshot) {
+        return MaterialApp(
+          title: 'Chat App',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            buttonTheme: ButtonTheme.of(context).copyWith(
+                textTheme: ButtonTextTheme.primary,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20))),
+            colorScheme: ColorScheme.fromSwatch(
+              primarySwatch: Colors.indigo,
+              backgroundColor: Colors.white,
+              accentColor: Colors.amber,
+              errorColor: Colors.orange,
+            ).copyWith(secondary: Colors.indigoAccent),
+            useMaterial3: true,
+          ),
+          home: StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (ctx, userSnapshot) {
+              if (userSnapshot.hasData) {
+                return const ChatScreen();
+              }
+              return const AuthScreen();
+            },
+          ),
+        );
+      },
     );
   }
 }
