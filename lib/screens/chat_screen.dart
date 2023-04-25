@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import '../widgets/widgets.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -17,6 +19,25 @@ class _ChatScreenState extends State<ChatScreen> {
     return fcmToken;
   }
 
+  String imageUrlString = '';
+
+  Future<void> getUserImageUrl() async {
+
+    final String userId = FirebaseAuth.instance.currentUser!.uid;
+
+    final DocumentReference userRef = FirebaseFirestore.instance.collection('users').doc(userId);
+
+    final DocumentSnapshot userSnapshot = await userRef.get();
+    final String imageUrl = await userSnapshot.get('image_url');
+
+    setState(() {
+      imageUrlString = imageUrl;
+    });
+
+
+    print('imageurlstring===================>$imageUrl');
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -30,6 +51,8 @@ class _ChatScreenState extends State<ChatScreen> {
       print(message);
       return;
     });
+    getUserImageUrl();
+    // print('multilinestring===================>${getUserImageUrl()}');
     print('TOKEN========>${getToken()}');
     super.initState();
   }
@@ -47,9 +70,8 @@ class _ChatScreenState extends State<ChatScreen> {
         actions: [
           DropdownButtonHideUnderline(
             child: DropdownButton(
-              icon: const Icon(
-                Icons.more_vert,
-                color: Colors.white,
+              icon: CircleAvatar(
+                backgroundImage: NetworkImage(imageUrlString!),
               ),
               borderRadius: BorderRadius.circular(20),
               items: [
