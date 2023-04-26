@@ -41,6 +41,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     // TODO: implement initState
+    super.initState();
     final fbm = FirebaseMessaging.instance;
     fbm.requestPermission();
     FirebaseMessaging.onMessage.listen((message) {
@@ -54,7 +55,6 @@ class _ChatScreenState extends State<ChatScreen> {
     getUserImageUrl();
     // print('multilinestring===================>${getUserImageUrl()}');
     print('TOKEN========>${getToken()}');
-    super.initState();
   }
 
   @override

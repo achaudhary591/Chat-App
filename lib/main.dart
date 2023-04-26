@@ -43,6 +43,9 @@ class MyHomePage extends StatelessWidget {
           home: StreamBuilder(
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (ctx, userSnapshot) {
+              if(userSnapshot.connectionState == ConnectionState.waiting){
+                return SplashScreen();
+              }
               if (userSnapshot.hasData) {
                 return const ChatScreen();
               }
