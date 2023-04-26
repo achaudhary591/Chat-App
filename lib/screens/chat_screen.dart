@@ -70,9 +70,7 @@ class _ChatScreenState extends State<ChatScreen> {
         actions: [
           DropdownButtonHideUnderline(
             child: DropdownButton(
-              icon: CircleAvatar(
-                backgroundImage: NetworkImage(imageUrlString!),
-              ),
+              icon: Icon(Icons.more_vert),
               borderRadius: BorderRadius.circular(20),
               items: [
                 DropdownMenuItem(
