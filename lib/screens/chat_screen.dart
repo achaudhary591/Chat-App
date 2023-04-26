@@ -13,7 +13,6 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-
   Future<String?> getToken() async {
     final fcmToken = await FirebaseMessaging.instance.getToken();
     return fcmToken;
@@ -22,10 +21,10 @@ class _ChatScreenState extends State<ChatScreen> {
   String imageUrlString = '';
 
   Future<void> getUserImageUrl() async {
-
     final String userId = FirebaseAuth.instance.currentUser!.uid;
 
-    final DocumentReference userRef = FirebaseFirestore.instance.collection('users').doc(userId);
+    final DocumentReference userRef =
+        FirebaseFirestore.instance.collection('users').doc(userId);
 
     final DocumentSnapshot userSnapshot = await userRef.get();
     final String imageUrl = await userSnapshot.get('image_url');
@@ -33,7 +32,6 @@ class _ChatScreenState extends State<ChatScreen> {
     setState(() {
       imageUrlString = imageUrl;
     });
-
 
     print('imageurlstring===================>$imageUrl');
   }
@@ -64,13 +62,18 @@ class _ChatScreenState extends State<ChatScreen> {
         iconTheme: const IconThemeData(color: Colors.white),
         title: const Text(
           'Chat Screen',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(
+            color: Colors.white,
+          ),
         ),
         backgroundColor: Colors.indigoAccent,
         actions: [
           DropdownButtonHideUnderline(
             child: DropdownButton(
-              icon: Icon(Icons.more_vert),
+              icon: Icon(
+                Icons.more_vert,
+                color: Colors.white,
+              ),
               borderRadius: BorderRadius.circular(20),
               items: [
                 DropdownMenuItem(
